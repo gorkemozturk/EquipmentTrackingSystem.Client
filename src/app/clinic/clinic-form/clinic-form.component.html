@@ -1,0 +1,24 @@
+<div class="header mb-3">
+    <div class="row">
+        <div class="col">
+            <a class="btn btn-primary" routerLink="/clinics">Back</a>
+        </div>
+    </div>
+</div>
+
+<div class="content d-flex justify-content-center">
+    <form [formGroup]="clinicForm" class="w-50">
+        <div class="mb-3">
+            <label>Clinic Name</label>
+            <input type="text" class="form-control" formControlName="clinicName" placeholder="Clinic Name">
+
+            <div class="text-danger" *ngIf="isSubmitted && field.clinicName.errors">
+                <small *ngIf="field.clinicName.errors.required">This field is required</small>
+            </div>
+        </div>
+
+        <div class="text-end">
+            <button type="submit" [disabled]="hasError" (click)="submit()" class="btn btn-primary">Save</button>
+        </div>
+    </form>
+</div>

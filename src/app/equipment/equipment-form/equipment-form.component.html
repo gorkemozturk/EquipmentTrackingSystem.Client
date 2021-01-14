@@ -1,0 +1,63 @@
+<div class="header mb-3">
+    <div class="row">
+        <div class="col">
+            <a class="btn btn-primary" routerLink="/equipments">Back</a>
+        </div>
+    </div>
+</div>
+
+<div class="content d-flex justify-content-center">
+    <form [formGroup]="equipmentForm" class="w-50">
+        <div class="mb-3">
+            <label>Equipment Name</label>
+            <input type="text" class="form-control" formControlName="equipmentName" placeholder="Equipment Name">
+
+            <div class="text-danger" *ngIf="isSubmitted && field.equipmentName.errors">
+                <small *ngIf="field.equipmentName.errors.required">This field is required</small>
+            </div>
+        </div>
+
+        <div class="mb-3">
+            <label>Supplied Date</label>
+            <input type="text" class="form-control" formControlName="suppliedAt" placeholder="Supplied Date">
+
+            <div class="text-danger" *ngIf="isSubmitted && field.suppliedAt.errors">
+                <small *ngIf="field.suppliedAt.errors.pattern">This field must be date format such as yyyy-mm-dd</small>
+            </div>
+        </div>
+
+        <div class="mb-3">
+            <label>Quantity</label>
+            <input type="text" class="form-control" formControlName="quantity" placeholder="Quantity">
+
+            <div class="text-danger" *ngIf="isSubmitted && field.quantity.errors">
+                <small *ngIf="field.quantity.errors.required">This field is required</small>
+                <small *ngIf="field.quantity.errors.pattern">This field must be greater than 0</small>
+            </div>
+        </div>
+
+        <div class="mb-3">
+            <label>Unit Price</label>
+            <input type="text" class="form-control" formControlName="unitPrice" placeholder="Unit Price">
+
+            <div class="text-danger" *ngIf="isSubmitted && field.unitPrice.errors">
+                <small *ngIf="field.unitPrice.errors.required">This field is required</small>
+                <small *ngIf="field.unitPrice.errors.pattern">This field must be greater than 00.01</small>
+            </div>
+        </div>
+
+        <div class="mb-3">
+            <label>Condition (%)</label>
+            <input type="text" class="form-control" formControlName="condition" placeholder="Condition (%)">
+
+            <div class="text-danger" *ngIf="isSubmitted && field.condition.errors">
+                <small *ngIf="field.condition.errors.required">This field is required.</small>
+                <small *ngIf="field.condition.errors.pattern">This field must be between 00.00 and 100.00</small>
+            </div>
+        </div>
+
+        <div class="text-end">
+            <button type="submit" (click)="submit()" class="btn btn-primary" [disabled]="hasError">Save</button>
+        </div>
+    </form>
+</div>

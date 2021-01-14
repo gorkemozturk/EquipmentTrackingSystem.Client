@@ -1,0 +1,97 @@
+<div class="header mb-5">
+    <div class="row">
+        <div class="col">
+            <input type="text" (input)="paramsService.search($event.target.value, subject)" 
+                class="form-control" placeholder="Search clinics...">
+        </div>
+
+        <div class="col text-end">
+            <button type="button" class="btn btn-outline-secondary" (click)="paramsService.refresh(subject)"
+                [disabled]="isPending">
+                Refresh
+            </button>
+            
+            <a class="btn btn-primary ms-1" routerLink="new">Create a New Clinic</a>
+        </div>
+    </div>
+</div>
+
+<div class="content">
+    <table class="table">
+        <thead>
+            <tr>
+                <th scope="col" [appSort]="clinics" data-order="desc" data-name="id">#</th>
+                <th scope="col" [appSort]="clinics" data-order="desc" data-name="clinicName">Clinic Name</th>
+                <th scope="col" [appSort]="clinics" data-order="desc" data-name="equipmentCount">Total Equipments</th>
+                <th scope="col"></th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr *ngIf="isPending">
+                <td colspan="4" class="text-center">
+                    Loading...
+                </td>
+            </tr>
+
+            <tr *ngIf="!isPending && clinics.length === 0">
+                <td colspan="4" class="text-center">
+                    No resource to list.
+                </td>
+            </tr>
+
+            <tr *ngFor="let clinic of clinics">
+                <td class="align-middle">{{clinic.id | number:'3.0'}}</td>
+                <td class="align-middle">{{clinic.clinicName}}</td>
+                <td class="align-middle">{{clinic.equipmentCount}}</td>
+                <td class="align-middle text-end">
+                    <a class="btn btn-outline-secondary btn-sm" [routerLink]="['/equipments', clinic.id, 'new']">Add an Equipment</a>
+                    <a class="btn btn-outline-secondary btn-sm mx-1" [routerLink]="[clinic.id, 'edit']">Edit</a>
+                    
+                    <button class="btn btn-outline-secondary btn-sm" (click)="delete(clinic)"
+                        [disabled]="clinic.equipmentCount > 0">
+                        Delete
+                    </button>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+
+    <div class="d-flex justify-content-between align-items-center">
+        <div>
+            Resources: {{paramsService.currentParams.total}} |
+            Page: {{paramsService.currentParams.page}} |
+            Size: {{paramsService.currentParams.size}} |
+            Pages: {{paramsService.currentParams.pages}}
+        </div>
+
+        <div>
+            <button class="btn btn-sm" (click)="paramsService.setSize(5, subject)"
+                [disabled]="isPending" [ngClass]="{'btn-secondary': paramsService.currentParams.size === 5, 
+                'btn-outline-secondary': paramsService.currentParams.size != 5}">
+                5
+            </button>
+            <button class="btn btn-sm mx-1" (click)="paramsService.setSize(10, subject)"
+                [disabled]="isPending" [ngClass]="{'btn-secondary': paramsService.currentParams.size === 10, 
+                'btn-outline-secondary': paramsService.currentParams.size != 10}">
+                10
+            </button>
+            <button class="btn btn-sm" (click)="paramsService.setSize(25, subject)"
+                [disabled]="isPending" [ngClass]="{'btn-secondary': paramsService.currentParams.size === 25, 
+                'btn-outline-secondary': paramsService.currentParams.size != 25}">
+                25
+            </button>
+
+            <button class="btn btn-secondary btn-sm ms-3" (click)="paramsService.previous(subject)"
+                [disabled]="isPending || !paramsService.currentParams.hasprevious">
+                Previous
+            </button>
+
+            <span class="mx-2">{{paramsService.currentParams.page}}</span>
+
+            <button class="btn btn-secondary btn-sm" (click)="paramsService.next(subject)"
+                [disabled]="isPending || !paramsService.currentParams.hasnext">
+                Next
+            </button>
+        </div>
+    </div>
+</div>
